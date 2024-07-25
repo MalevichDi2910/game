@@ -8,26 +8,30 @@ $(document).ready(function () {
 
     function addNextTask(a, b) {
         const task = `
-            <div class="task-container">
-                <div>${a} x ${b} = <input type="number" class="result"></div>
-            </div>
-        `;
+                    <div class="task-container" style="display: none;">
+                        <div>${a} x ${b} = <input type="number" class="result"></div>
+                    </div>
+                `;
         $('#task-container').append(task);
+        $('#task-container .task-container').last().fadeIn(500);
+        bindKeyup();
     }
 
-    // Функция для проверки ответа и перехода к следующему вопросу
     function checkResultAndGoNext(val, a, b) {
         if (val == multiply(a, b)) {
             $('.result').last().replaceWith(`<span>${val}</span>`);
+
+            $('#done').addClass('right');
+            setTimeout(() => {
+                $('#done').removeClass('right');
+            }, 500);
 
             if (startingValue < maxValue) {
                 startingValue++;
                 const newB = startingValue;
                 addNextTask(4, newB);
-                bindKeyup();
             }
 
-            $('#done').removeClass('wrong').addClass('right');
         } else {
             $('.result').last().addClass('wrong-input');
             $('#done').removeClass('right').addClass('wrong');
@@ -39,24 +43,23 @@ $(document).ready(function () {
     }
 
     $('#done').on('click', function () {
-        addNextTask(4, startingValue);
-        bindKeyup(); // Привязываем обработчик к инпутам
-        $('#done').prop('disabled', true);
+        const val = $('.result').last().val();
+        const questionText = $('.result').last().parent().text().split(' =')[0];
+        const [a, b] = questionText.split(' x ').map(Number);
+
+        if (val !== '') {
+            checkResultAndGoNext(val, a, b);
+        }
     });
 
     function bindKeyup() {
         $('.result').off('keyup').on('keyup', function () {
             const val = $(this).val();
-            const questionText = $(this).parent().text().split(' =')[0];
-            const [a, b] = questionText.split(' x ').map(Number);
-
-            if (val !== '') {
-                $('#done').prop('disabled', false);
-            } else {
-                $('#done').prop('disabled', true);
-            }
-
-            checkResultAndGoNext(val, a, b);
+            const isValid = !isNaN(val) && val.trim() !== '';
+            $('#done').prop('disabled', !isValid);
         });
     }
+
+    addNextTask(4, startingValue);
+    $('#done').prop('disabled', true);
 });
