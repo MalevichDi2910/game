@@ -6,23 +6,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 #common-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 600px;
+    max-width: 900px;
     height: 80%;
 }
 
-#task-container {
+#main-content {
+    display: flex;
     flex: 1;
+    position: relative;
+}
+
+#task-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
+    gap: 24px;
 }
 
 #btn-done {
@@ -30,10 +34,25 @@ body {
     justify-content: center;
 }
 
+.task-container {
+    font-size: 28px;
+}
+
+.cube-row {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 0;
+}
+
+.wrong-input {
+    color: #FA8072;
+}
+
 input[type="number"] {
     width: 60px;
     height: 30px;
-    font-size: 20px;
+    font-size: 28px;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -45,7 +64,7 @@ button {
     all: unset;
     cursor: pointer;
     width: 60px;
-    background-color:  #00b4b4;
+    background-color: #00b4b4;
     color: #FFF;
     padding: 10px 20px;
     font-size: 18px;
@@ -69,13 +88,24 @@ button:disabled {
     background-color: #A9A9A9;
 }
 
-.task-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-size: 20px;
+@keyframes slideIn {
+    from {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.wrong-input {
-    color: #FA8072;
+.cube {
+    width: 40px;
+    height: 40px;
+    background-color: #228B22;
+    opacity: 0;
+}
+
+.cube.animate {
+    animation: slideIn 0.5s ease-out forwards;
 }
