@@ -39,7 +39,7 @@ $(document).ready(function () {
         addCubes(numCubes);
     }
 
-    function handleCorrectAnswer(val) {
+    function handleCorrectAnswer(val, num) {
         $('.result').last().replaceWith(`<span>${val}</span>`);
         $('#done').addClass('right');
         setTimeout(() => {
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
         if (currentValue < maxValue) {
             currentValue++;
-            updateTasksAndCubes(4, 4)
+            updateTasksAndCubes(num, num)
         } else {
             resetGame();
         }
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     function checkResultAndGoNext(val, a, b) {
         if (val == multiply(a, b)) {
-            handleCorrectAnswer(val);
+            handleCorrectAnswer(val, a);
         } else {
             handleIncorrectAnswer();
         }
