@@ -28,10 +28,15 @@ $(document).ready(function () {
         rowPositionTop += 56;
     }
 
-    function initializeTask() {
-        addNextTask(4, currentValue);
-        addCubes(4);
+    function initializeTask(taskNum, numCubes) {
+        addNextTask(taskNum, currentValue);
+        addCubes(numCubes);
         $('#done').prop('disabled', true);
+    }
+
+    function updateTasksAndCubes(taskNum, numCubes) {
+        addNextTask(taskNum, currentValue);
+        addCubes(numCubes);
     }
 
     function handleCorrectAnswer(val) {
@@ -43,8 +48,7 @@ $(document).ready(function () {
 
         if (currentValue < maxValue) {
             currentValue++;
-            addNextTask(4, currentValue);
-            addCubes(4);
+            updateTasksAndCubes(4, 4)
         } else {
             resetGame();
         }
@@ -67,14 +71,6 @@ $(document).ready(function () {
         }
     }
 
-    function resetGame() {
-        currentValue = 1;
-        rowPositionTop = 0;
-        $('#task-container').empty();
-        $('#cubes-container').empty();
-        initializeTask();
-    }
-
     $('#done').on('click', function () {
         const val = $('.result').last().val();
         const questionText = $('.result').last().parent().text().split(' =')[0];
@@ -93,5 +89,13 @@ $(document).ready(function () {
         });
     }
 
-    initializeTask();
+    function resetGame() {
+        currentValue = 1;
+        rowPositionTop = 0;
+        $('#task-container').empty();
+        $('#cubes-container').empty();
+        initializeTask(4, 4);
+    }
+
+    initializeTask(4, 4);
 });
